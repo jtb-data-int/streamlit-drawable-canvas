@@ -26,9 +26,8 @@ const SquareIcon = ({
   <img
     src={imgUrl}
     className={`
-    ${enabled ? styles.enabled : styles.disabled} ${
-      invertX ? "" : styles.invertx
-    }
+    ${enabled ? styles.enabled : styles.disabled} ${invertX ? "" : styles.invertx
+      }
     `}
     alt={altText}
     title={altText}
@@ -68,7 +67,7 @@ const CanvasToolbar = ({
   const iconElements = [
     {
       imgUrl: download,
-      altText: "Send to Streamlit",
+      altText: "Download image",
       invertX: false,
       enabled: true,
       clickCallback: downloadCallback,
@@ -78,14 +77,14 @@ const CanvasToolbar = ({
       altText: "Undo",
       invertX: true,
       enabled: canUndo,
-      clickCallback: canUndo ? undoCallback : () => {},
+      clickCallback: canUndo ? undoCallback : () => { },
     },
     {
       imgUrl: undo,
       altText: "Redo",
       invertX: false,
       enabled: canRedo,
-      clickCallback: canRedo ? redoCallback : () => {},
+      clickCallback: canRedo ? redoCallback : () => { },
     },
     {
       imgUrl: bin,

@@ -124,7 +124,7 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
   useEffect(() => {
     if (backgroundImageURL) {
       var bgImage = new Image();
-      bgImage.onload = function() {
+      bgImage.onload = function () {
         backgroundCanvas.getContext().drawImage(bgImage, 0, 0);
       };
       const baseUrl = getStreamlitBaseUrl() ?? ""
@@ -145,7 +145,7 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
    */
   useEffect(() => {
     if (shouldReloadCanvas) {
-      canvas.loadFromJSON(currentState, () => {})
+      canvas.loadFromJSON(currentState, () => { })
     }
   }, [canvas, shouldReloadCanvas, currentState])
 
@@ -195,6 +195,37 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
   /**
    * Render canvas w/ toolbar
    */
+  const generateUUID = () => {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c === "x" ? r : (r & 0x3) | 0x8
+      return v.toString(16)
+    })
+  }
+
+  const handleDownload = () => {
+    const virtualCanvas = document.createElement("canvas")
+    const ctx = virtualCanvas.getContext("2d")
+    virtualCanvas.width = canvasWidth
+    virtualCanvas.height = canvasHeight
+
+    if (ctx) {
+      // Draw the background canvas content
+      ctx.drawImage(backgroundCanvas.getElement(), 0, 0)
+      // Draw the drawing canvas content on top
+      ctx.drawImage(canvas.getElement(), 0, 0)
+
+      // Get the data URL and trigger download
+      const dataUrl = virtualCanvas.toDataURL("image/png")
+      const link = document.createElement("a")
+      link.href = dataUrl
+      link.download = `${generateUUID()}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  }
+
   return (
     <div style={{ position: "relative" }}>
       <div
@@ -250,7 +281,7 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
           leftPosition={canvasWidth}
           canUndo={canUndo}
           canRedo={canRedo}
-          downloadCallback={forceStreamlitUpdate}
+          downloadCallback={handleDownload}
           undoCallback={undo}
           redoCallback={redo}
           resetCallback={() => {
