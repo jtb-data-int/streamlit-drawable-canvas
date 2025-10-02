@@ -204,6 +204,13 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
   }
 
   const handleDownload = () => {
+    // Store the current active object
+    const activeObject = canvas.getActiveObject()
+
+    // Deselect all objects
+    canvas.discardActiveObject()
+    canvas.renderAll()
+
     const virtualCanvas = document.createElement("canvas")
     const ctx = virtualCanvas.getContext("2d")
     virtualCanvas.width = canvasWidth
@@ -223,6 +230,12 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
+    }
+
+    // Restore the active object if it exists
+    if (activeObject) {
+      canvas.setActiveObject(activeObject)
+      canvas.renderAll()
     }
   }
 
