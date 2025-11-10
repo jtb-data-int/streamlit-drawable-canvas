@@ -289,18 +289,20 @@ const DrawableCanvas = ({ args }: ComponentProps) => {
         />
       </div>
       {displayToolbar && (
-        <CanvasToolbar
-          topPosition={canvasHeight}
-          leftPosition={canvasWidth}
-          canUndo={canUndo}
-          canRedo={canRedo}
-          downloadCallback={handleDownload}
-          undoCallback={undo}
-          redoCallback={redo}
-          resetCallback={() => {
-            resetState(initialState)
-          }}
-        />
+        <div style={{ display: "none" }} aria-hidden="true">
+          <CanvasToolbar
+            topPosition={canvasHeight}
+            leftPosition={canvasWidth}
+            canUndo={canUndo}
+            canRedo={canRedo}
+            downloadCallback={handleDownload}
+            undoCallback={undo}
+            redoCallback={redo}
+            resetCallback={() => {
+              resetState(initialState)
+            }}
+          />
+        </div>
       )}
     </div>
   )
